@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 #![cfg(not(test))]
 
 // These symbols are all defined by `libm`,

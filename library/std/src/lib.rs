@@ -329,7 +329,7 @@
 #![feature(exclusive_wrapper)]
 #![feature(exposed_provenance)]
 #![feature(extend_one)]
-#![feature(float_gamma)]
+// #![feature(float_gamma)]
 #![feature(float_minimum_maximum)]
 #![feature(float_next_up_down)]
 #![feature(fmt_internals)]
@@ -569,8 +569,19 @@ pub use core::usize;
 pub mod f128;
 #[unstable(feature = "f16", issue = "116909")]
 pub mod f16;
+
+#[cfg(any(feature = "f64", test))]
 pub mod f32;
+#[cfg(any(feature = "f64", test))]
 pub mod f64;
+
+#[cfg(any(feature = "f64", test))]
+pub mod f32;
+#[cfg(not(any(feature = "f64", test)))]
+pub mod my_f64;
+
+
+
 
 #[macro_use]
 pub mod thread;

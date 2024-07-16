@@ -27,8 +27,13 @@ pub use core::f64::{
     MIN_EXP, MIN_POSITIVE, NAN, NEG_INFINITY, RADIX,
 };
 
+#[allow(non_camel_case_types)]
+#[stable(feature = "rust1", since = "1.0.0")]
+#[derive(Copy, Clone, Debug)]
+pub struct my_f64(pub f64);
+
 #[cfg(not(test))]
-impl f64 {
+impl my_f64 {
     /// Returns the largest integer less than or equal to `self`.
     ///
     /// This function always returns the precise result.
@@ -49,7 +54,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn floor(self) -> f64 {
-        unsafe { intrinsics::floorf64(self) }
+        unsafe { intrinsics::floorf64(self.0) }
     }
 
     /// Returns the smallest integer greater than or equal to `self`.
@@ -71,7 +76,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn ceil(self) -> f64 {
-        unsafe { intrinsics::ceilf64(self) }
+        unsafe { intrinsics::ceilf64(self.0) }
     }
 
     /// Returns the nearest integer to `self`. If a value is half-way between two
@@ -99,7 +104,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn round(self) -> f64 {
-        unsafe { intrinsics::roundf64(self) }
+        unsafe { intrinsics::roundf64(self.0) }
     }
 
     /// Returns the nearest integer to a number. Rounds half-way cases to the number
@@ -125,7 +130,7 @@ impl f64 {
     #[stable(feature = "round_ties_even", since = "1.77.0")]
     #[inline]
     pub fn round_ties_even(self) -> f64 {
-        unsafe { intrinsics::rintf64(self) }
+        unsafe { intrinsics::rintf64(self.0) }
     }
 
     /// Returns the integer part of `self`.
@@ -150,7 +155,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn trunc(self) -> f64 {
-        unsafe { intrinsics::truncf64(self) }
+        unsafe { intrinsics::truncf64(self.0) }
     }
 
     /// Returns the fractional part of `self`.
@@ -173,7 +178,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn fract(self) -> f64 {
-        self - self.trunc()
+        self.0 - self.trunc()
     }
 
     /// Computes the absolute value of `self`.
@@ -196,7 +201,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn abs(self) -> f64 {
-        unsafe { intrinsics::fabsf64(self) }
+        unsafe { intrinsics::fabsf64(self.0) }
     }
 
     /// Returns a number that represents the sign of `self`.
@@ -220,7 +225,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn signum(self) -> f64 {
-        if self.is_nan() { Self::NAN } else { 1.0_f64.copysign(self) }
+        if self.0.is_nan() { f64::NAN } else { my_f64( 1.0_f64 ).copysign(self.0) }
     }
 
     /// Returns a number composed of the magnitude of `self` and the sign of
@@ -249,7 +254,7 @@ impl f64 {
     #[stable(feature = "copysign", since = "1.35.0")]
     #[inline]
     pub fn copysign(self, sign: f64) -> f64 {
-        unsafe { intrinsics::copysignf64(self, sign) }
+        unsafe { intrinsics::copysignf64(self.0, sign) }
     }
 
     /// Fused multiply-add. Computes `(self * a) + b` with only one rounding
@@ -290,7 +295,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn mul_add(self, a: f64, b: f64) -> f64 {
-        unsafe { intrinsics::fmaf64(self, a, b) }
+        unsafe { intrinsics::fmaf64(self.0, a, b) }
     }
 
     /// Calculates Euclidean division, the matching method for `rem_euclid`.
@@ -320,8 +325,8 @@ impl f64 {
     #[inline]
     #[stable(feature = "euclidean_division", since = "1.38.0")]
     pub fn div_euclid(self, rhs: f64) -> f64 {
-        let q = (self / rhs).trunc();
-        if self % rhs < 0.0 {
+        let q = my_f64(self.0 / rhs).trunc();
+        if self.0 % rhs < 0.0 {
             return if rhs > 0.0 { q - 1.0 } else { q + 1.0 };
         }
         q
@@ -361,8 +366,8 @@ impl f64 {
     #[inline]
     #[stable(feature = "euclidean_division", since = "1.38.0")]
     pub fn rem_euclid(self, rhs: f64) -> f64 {
-        let r = self % rhs;
-        if r < 0.0 { r + rhs.abs() } else { r }
+        let r = self.0 % rhs;
+        if r < 0.0 { r + my_f64( rhs ).abs() } else { r }
     }
 
     /// Raises a number to an integer power.
@@ -389,7 +394,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn powi(self, n: i32) -> f64 {
-        unsafe { intrinsics::powif64(self, n) }
+        unsafe { intrinsics::powif64(self.0, n) }
     }
 
     /// Raises a number to a floating point power.
@@ -412,7 +417,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn powf(self, n: f64) -> f64 {
-        unsafe { intrinsics::powf64(self, n) }
+        unsafe { intrinsics::powf64(self.0, n) }
     }
 
     /// Returns the square root of a number.
@@ -441,7 +446,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn sqrt(self) -> f64 {
-        unsafe { intrinsics::sqrtf64(self) }
+        unsafe { intrinsics::sqrtf64(self.0) }
     }
 
     /// Returns `e^(self)`, (the exponential function).
@@ -468,7 +473,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn exp(self) -> f64 {
-        unsafe { intrinsics::expf64(self) }
+        unsafe { intrinsics::expf64(self.0) }
     }
 
     /// Returns `2^(self)`.
@@ -493,7 +498,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn exp2(self) -> f64 {
-        unsafe { intrinsics::exp2f64(self) }
+        unsafe { intrinsics::exp2f64(self.0) }
     }
 
     /// Returns the natural logarithm of the number.
@@ -549,7 +554,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn log(self, base: f64) -> f64 {
-        self.ln() / base.ln()
+        self.ln() / my_f64( base ).ln()
     }
 
     /// Returns the base 2 logarithm of the number.
@@ -574,7 +579,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn log2(self) -> f64 {
-        crate::sys::log_wrapper(self, crate::sys::log2f64)
+        crate::sys::log_wrapper(self, |n| unsafe{crate::intrinsics::log2f64(n)})
     }
 
     /// Returns the base 10 logarithm of the number.
@@ -641,7 +646,7 @@ impl f64 {
                 filing an issue describing your use-case too)."
     )]
     pub fn abs_sub(self, other: f64) -> f64 {
-        unsafe { cmath::fdim(self, other) }
+        unsafe { cmath::fdim(self.0, other) }
     }
 
     /// Returns the cube root of a number.
@@ -668,7 +673,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn cbrt(self) -> f64 {
-        unsafe { cmath::cbrt(self) }
+        unsafe { cmath::cbrt(self.0) }
     }
 
     /// Compute the distance between the origin and a point (`x`, `y`) on the
@@ -699,7 +704,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn hypot(self, other: f64) -> f64 {
-        unsafe { cmath::hypot(self, other) }
+        unsafe { cmath::hypot(self.0, other) }
     }
 
     /// Computes the sine of a number (in radians).
@@ -723,7 +728,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn sin(self) -> f64 {
-        unsafe { intrinsics::sinf64(self) }
+        unsafe { intrinsics::sinf64(self.0) }
     }
 
     /// Computes the cosine of a number (in radians).
@@ -747,7 +752,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn cos(self) -> f64 {
-        unsafe { intrinsics::cosf64(self) }
+        unsafe { intrinsics::cosf64(self.0) }
     }
 
     /// Computes the tangent of a number (in radians).
@@ -772,7 +777,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn tan(self) -> f64 {
-        unsafe { cmath::tan(self) }
+        unsafe { cmath::tan(self.0) }
     }
 
     /// Computes the arcsine of a number. Return value is in radians in
@@ -802,7 +807,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn asin(self) -> f64 {
-        unsafe { cmath::asin(self) }
+        unsafe { cmath::asin(self.0) }
     }
 
     /// Computes the arccosine of a number. Return value is in radians in
@@ -832,7 +837,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn acos(self) -> f64 {
-        unsafe { cmath::acos(self) }
+        unsafe { cmath::acos(self.0) }
     }
 
     /// Computes the arctangent of a number. Return value is in radians in the
@@ -861,7 +866,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn atan(self) -> f64 {
-        unsafe { cmath::atan(self) }
+        unsafe { cmath::atan(self.0) }
     }
 
     /// Computes the four quadrant arctangent of `self` (`y`) and `other` (`x`) in radians.
@@ -902,7 +907,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn atan2(self, other: f64) -> f64 {
-        unsafe { cmath::atan2(self, other) }
+        unsafe { cmath::atan2(self.0, other) }
     }
 
     /// Simultaneously computes the sine and cosine of the number, `x`. Returns
@@ -935,7 +940,7 @@ impl f64 {
         (self.sin(), self.cos())
     }
 
-    /// Returns `e^(self) - 1` in a way that is accurate even if the
+    /// Returns `e^(self.0) - 1` in a way that is accurate even if the
     /// number is close to zero.
     ///
     /// # Unspecified precision
@@ -961,7 +966,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn exp_m1(self) -> f64 {
-        unsafe { cmath::expm1(self) }
+        unsafe { cmath::expm1(self.0) }
     }
 
     /// Returns `ln(1+n)` (natural logarithm) more accurately than if
@@ -991,7 +996,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn ln_1p(self) -> f64 {
-        unsafe { cmath::log1p(self) }
+        unsafe { cmath::log1p(self.0) }
     }
 
     /// Hyperbolic sine function.
@@ -1021,7 +1026,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn sinh(self) -> f64 {
-        unsafe { cmath::sinh(self) }
+        unsafe { cmath::sinh(self.0) }
     }
 
     /// Hyperbolic cosine function.
@@ -1051,7 +1056,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn cosh(self) -> f64 {
-        unsafe { cmath::cosh(self) }
+        unsafe { cmath::cosh(self.0) }
     }
 
     /// Hyperbolic tangent function.
@@ -1081,7 +1086,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn tanh(self) -> f64 {
-        unsafe { cmath::tanh(self) }
+        unsafe { cmath::tanh(self.0) }
     }
 
     /// Inverse hyperbolic sine function.
@@ -1109,7 +1114,7 @@ impl f64 {
     pub fn asinh(self) -> f64 {
         let ax = self.abs();
         let ix = 1.0 / ax;
-        (ax + (ax / (Self::hypot(1.0, ix) + ix))).ln_1p().copysign(self)
+        my_f64( my_f64(ax + (ax / (Self::hypot(my_f64( 1.0 ), ix) + ix))).ln_1p() ).copysign(self.0)
     }
 
     /// Inverse hyperbolic cosine function.
@@ -1135,10 +1140,10 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn acosh(self) -> f64 {
-        if self < 1.0 {
-            Self::NAN
+        if self.0 < 1.0 {
+            f64::NAN
         } else {
-            (self + ((self - 1.0).sqrt() * (self + 1.0).sqrt())).ln()
+            my_f64(self.0 + (my_f64(self.0 - 1.0).sqrt() * my_f64(self.0 + 1.0).sqrt())).ln()
         }
     }
 
@@ -1165,7 +1170,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn atanh(self) -> f64 {
-        0.5 * ((2.0 * self) / (1.0 - self)).ln_1p()
+        0.5 * my_f64((2.0 * self.0) / (1.0 - self.0)).ln_1p()
     }
 
     /// Gamma function.
@@ -1193,7 +1198,7 @@ impl f64 {
     #[unstable(feature = "float_gamma", issue = "99842")]
     #[inline]
     pub fn gamma(self) -> f64 {
-        unsafe { cmath::tgamma(self) }
+        unsafe { cmath::tgamma(self.0) }
     }
 
     /// Natural logarithm of the absolute value of the gamma function
@@ -1223,7 +1228,7 @@ impl f64 {
     #[inline]
     pub fn ln_gamma(self) -> (f64, i32) {
         let mut signgamp: i32 = 0;
-        let x = unsafe { cmath::lgamma_r(self, &mut signgamp) };
+        let x = unsafe { cmath::lgamma_r(self.0, &mut signgamp) };
         (x, signgamp)
     }
 }
