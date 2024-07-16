@@ -35,10 +35,10 @@
 pub use bool;
 #[stable(feature = "core_primitive", since = "1.43.0")]
 pub use char;
-#[stable(feature = "core_primitive", since = "1.43.0")]
-pub use f32;
-#[stable(feature = "core_primitive", since = "1.43.0")]
-pub use f64;
+// #[stable(feature = "core_primitive", since = "1.43.0")]
+// pub use f32;
+// #[stable(feature = "core_primitive", since = "1.43.0")]
+// pub use f64;
 #[stable(feature = "core_primitive", since = "1.43.0")]
 pub use i128;
 #[stable(feature = "core_primitive", since = "1.43.0")]
