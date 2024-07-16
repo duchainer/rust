@@ -45,6 +45,10 @@ members = [
   "src/tools/opt-dist",
   "src/tools/coverage-dump",
   "src/tools/rustc-perf-wrapper",
+
+  "library/rustc-std-workspace-alloc",
+  "library/rustc-std-workspace-core",
+  "library/rustc-std-workspace-std",
 ]
 
 exclude = [
@@ -62,6 +66,8 @@ exclude = [
   "src/tools/x",
   # stdarch has its own Cargo workspace
   "library/stdarch",
+
+  "library/backtrace",
 ]
 
 [profile.release.package.compiler_builtins]
