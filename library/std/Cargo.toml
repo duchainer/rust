@@ -60,7 +60,6 @@ r-efi = { version = "4.2.0", features = ['rustc-dep-of-std'] }
 r-efi-alloc = { version = "1.0.0", features = ['rustc-dep-of-std'] }
 
 [features]
-f64 = []
 backtrace = [
   'addr2line/rustc-dep-of-std',
   'object/rustc-dep-of-std',

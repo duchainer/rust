@@ -77,7 +77,6 @@ cfg_if::cfg_if! {
 }
 
 #[cfg(not(test))]
-#[cfg(any(feature = "f64", test))]
 cfg_if::cfg_if! {
     if #[cfg(target_os = "android")] {
         pub use self::android::log2f32;
@@ -120,20 +119,10 @@ pub fn log_wrapper<F: Fn(f64) -> f64>(n: f64, log_fn: F) -> f64 {
 }
 
 #[cfg(not(test))]
-#[cfg(any(feature = "f64", test))]
 #[cfg(not(any(target_os = "solaris", target_os = "illumos")))]
 #[inline]
 pub fn log_wrapper<F: Fn(f64) -> f64>(n: f64, log_fn: F) -> f64 {
     log_fn(n)
-}
-
-
-#[cfg(not(test))]
-#[cfg(not(any(feature = "f64", test)))]
-#[cfg(not(any(target_os = "solaris", target_os = "illumos")))]
-#[inline]
-pub fn log_wrapper<F: Fn(f64) -> f64>(n: crate::my_f64::my_f64, log_fn: F) -> f64 {
-    log_fn(n.0)
 }
 
 #[cfg(not(target_os = "uefi"))]

@@ -135,7 +135,6 @@ impl Summary {
     }
 }
 
-#[cfg(any(feature = "f64", test))]
 impl Stats for [f64] {
     // FIXME #11059 handle NaN, inf and overflow
     fn sum(&self) -> f64 {

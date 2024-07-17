@@ -1169,7 +1169,6 @@ impl f64 {
     }
 
     /// Gamma function.
-    #[cfg(any(feature = "f64", test))]
     ///
     /// # Unspecified precision
     ///
