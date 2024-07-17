@@ -147,7 +147,7 @@ impl Stats for [f64] {
             // partial so that the list of partial sums remains exact.
             for i in 0..partials.len() {
                 let mut y: f64 = partials[i];
-                if x.abs() < y.abs() {
+                if x.my_abs() < y.my_abs() {
                     mem::swap(&mut x, &mut y);
                 }
                 // Rounded `x+y` is stored in `hi` with round-off stored in
@@ -209,7 +209,7 @@ impl Stats for [f64] {
     }
 
     fn std_dev(&self) -> f64 {
-        self.var().sqrt()
+        self.var().my_sqrt()
     }
 
     fn std_dev_pct(&self) -> f64 {
@@ -219,7 +219,7 @@ impl Stats for [f64] {
 
     fn median_abs_dev(&self) -> f64 {
         let med = self.median();
-        let abs_devs: Vec<f64> = self.iter().map(|&v| (med - v).abs()).collect();
+        let abs_devs: Vec<f64> = self.iter().map(|&v| (med - v).my_abs()).collect();
         // This constant is derived by smarter statistics brains than me, but it is
         // consistent with how R and other packages treat the MAD.
         let number = 1.4826;
@@ -271,7 +271,7 @@ fn percentile_of_sorted(sorted_samples: &[f64], pct: f64) -> f64 {
     }
     let length = (sorted_samples.len() - 1) as f64;
     let rank = (pct / hundred) * length;
-    let lrank = rank.floor();
+    let lrank = rank.my_floor();
     let d = rank - lrank;
     let n = lrank as usize;
     let lo = sorted_samples[n];

@@ -40,9 +40,9 @@ impl f64 {
     /// let g = 3.0_f64;
     /// let h = -3.7_f64;
     ///
-    /// assert_eq!(f.floor(), 3.0);
-    /// assert_eq!(g.floor(), 3.0);
-    /// assert_eq!(h.floor(), -4.0);
+    /// assert_eq!(f.my_floor(), 3.0);
+    /// assert_eq!(g.my_floor(), 3.0);
+    /// assert_eq!(h.my_floor(), -4.0);
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
@@ -62,8 +62,8 @@ impl f64 {
     /// let f = 3.01_f64;
     /// let g = 4.0_f64;
     ///
-    /// assert_eq!(f.ceil(), 4.0);
-    /// assert_eq!(g.ceil(), 4.0);
+    /// assert_eq!(f.my_ceil(), 4.0);
+    /// assert_eq!(g.my_ceil(), 4.0);
     /// ```
     #[doc(alias = "ceiling")]
     #[rustc_allow_incoherent_impl]
@@ -88,11 +88,11 @@ impl f64 {
     /// let i = 3.5_f64;
     /// let j = 4.5_f64;
     ///
-    /// assert_eq!(f.round(), 3.0);
-    /// assert_eq!(g.round(), -3.0);
-    /// assert_eq!(h.round(), -4.0);
-    /// assert_eq!(i.round(), 4.0);
-    /// assert_eq!(j.round(), 5.0);
+    /// assert_eq!(f.my_round(), 3.0);
+    /// assert_eq!(g.my_round(), -3.0);
+    /// assert_eq!(h.my_round(), -4.0);
+    /// assert_eq!(i.my_round(), 4.0);
+    /// assert_eq!(j.my_round(), 5.0);
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
@@ -115,10 +115,10 @@ impl f64 {
     /// let h = 3.5_f64;
     /// let i = 4.5_f64;
     ///
-    /// assert_eq!(f.round_ties_even(), 3.0);
-    /// assert_eq!(g.round_ties_even(), -3.0);
-    /// assert_eq!(h.round_ties_even(), 4.0);
-    /// assert_eq!(i.round_ties_even(), 4.0);
+    /// assert_eq!(f.my_round_ties_even(), 3.0);
+    /// assert_eq!(g.my_round_ties_even(), -3.0);
+    /// assert_eq!(h.my_round_ties_even(), 4.0);
+    /// assert_eq!(i.my_round_ties_even(), 4.0);
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
@@ -140,9 +140,9 @@ impl f64 {
     /// let g = 3.0_f64;
     /// let h = -3.7_f64;
     ///
-    /// assert_eq!(f.trunc(), 3.0);
-    /// assert_eq!(g.trunc(), 3.0);
-    /// assert_eq!(h.trunc(), -3.0);
+    /// assert_eq!(f.my_trunc(), 3.0);
+    /// assert_eq!(g.my_trunc(), 3.0);
+    /// assert_eq!(h.my_trunc(), -3.0);
     /// ```
     #[doc(alias = "truncate")]
     #[rustc_allow_incoherent_impl]
@@ -162,8 +162,8 @@ impl f64 {
     /// ```
     /// let x = 3.6_f64;
     /// let y = -3.6_f64;
-    /// let abs_difference_x = (x.fract() - 0.6).abs();
-    /// let abs_difference_y = (y.fract() - (-0.6)).abs();
+    /// let abs_difference_x = (x.my_fract() - 0.6).my_abs();
+    /// let abs_difference_y = (y.my_fract() - (-0.6)).my_abs();
     ///
     /// assert!(abs_difference_x < 1e-10);
     /// assert!(abs_difference_y < 1e-10);
@@ -173,7 +173,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn my_fract(self) -> f64 {
-        self - self.trunc()
+        self - self.my_trunc()
     }
 
     /// Computes the absolute value of `self`.
@@ -186,10 +186,10 @@ impl f64 {
     /// let x = 3.5_f64;
     /// let y = -3.5_f64;
     ///
-    /// assert_eq!(x.abs(), x);
-    /// assert_eq!(y.abs(), -y);
+    /// assert_eq!(x.my_abs(), x);
+    /// assert_eq!(y.my_abs(), -y);
     ///
-    /// assert!(f64::NAN.abs().is_nan());
+    /// assert!(f64::NAN.my_abs().is_nan());
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
@@ -210,17 +210,21 @@ impl f64 {
     /// ```
     /// let f = 3.5_f64;
     ///
-    /// assert_eq!(f.signum(), 1.0);
-    /// assert_eq!(f64::NEG_INFINITY.signum(), -1.0);
+    /// assert_eq!(f.my_signum(), 1.0);
+    /// assert_eq!(f64::NEG_INFINITY.my_signum(), -1.0);
     ///
-    /// assert!(f64::NAN.signum().is_nan());
+    /// assert!(f64::NAN.my_signum().is_nan());
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn my_signum(self) -> f64 {
-        if self.is_nan() { Self::NAN } else { 1.0_f64.copysign(self) }
+        if self.is_nan() {
+            Self::NAN
+        } else {
+            1.0_f64.my_copysign(self)
+        }
     }
 
     /// Returns a number composed of the magnitude of `self` and the sign of
@@ -237,12 +241,12 @@ impl f64 {
     /// ```
     /// let f = 3.5_f64;
     ///
-    /// assert_eq!(f.copysign(0.42), 3.5_f64);
-    /// assert_eq!(f.copysign(-0.42), -3.5_f64);
-    /// assert_eq!((-f).copysign(0.42), 3.5_f64);
-    /// assert_eq!((-f).copysign(-0.42), -3.5_f64);
+    /// assert_eq!(f.my_copysign(0.42), 3.5_f64);
+    /// assert_eq!(f.my_copysign(-0.42), -3.5_f64);
+    /// assert_eq!((-f).my_copysign(0.42), 3.5_f64);
+    /// assert_eq!((-f).my_copysign(-0.42), -3.5_f64);
     ///
-    /// assert!(f64::NAN.copysign(1.0).is_nan());
+    /// assert!(f64::NAN.my_copysign(1.0).is_nan());
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
@@ -273,7 +277,7 @@ impl f64 {
     /// let x = 4.0_f64;
     /// let b = 60.0_f64;
     ///
-    /// assert_eq!(m.mul_add(x, b), 100.0);
+    /// assert_eq!(m.my_mul_add(x, b), 100.0);
     /// assert_eq!(m * x + b, 100.0);
     ///
     /// let one_plus_eps = 1.0_f64 + f64::EPSILON;
@@ -281,7 +285,7 @@ impl f64 {
     /// let minus_one = -1.0_f64;
     ///
     /// // The exact result (1 + eps) * (1 - eps) = 1 - eps * eps.
-    /// assert_eq!(one_plus_eps.mul_add(one_minus_eps, minus_one), -f64::EPSILON * f64::EPSILON);
+    /// assert_eq!(one_plus_eps.my_mul_add(one_minus_eps, minus_one), -f64::EPSILON * f64::EPSILON);
     /// // Different rounding with the non-fused multiply and add.
     /// assert_eq!(one_plus_eps * one_minus_eps + minus_one, 0.0);
     /// ```
@@ -296,7 +300,7 @@ impl f64 {
     /// Calculates Euclidean division, the matching method for `rem_euclid`.
     ///
     /// This computes the integer `n` such that
-    /// `self = n * rhs + self.rem_euclid(rhs)`.
+    /// `self = n * rhs + self.my_rem_euclid(rhs)`.
     /// In other words, the result is `self / rhs` rounded to the integer `n`
     /// such that `self >= n * rhs`.
     ///
@@ -310,17 +314,17 @@ impl f64 {
     /// ```
     /// let a: f64 = 7.0;
     /// let b = 4.0;
-    /// assert_eq!(a.div_euclid(b), 1.0); // 7.0 > 4.0 * 1.0
-    /// assert_eq!((-a).div_euclid(b), -2.0); // -7.0 >= 4.0 * -2.0
-    /// assert_eq!(a.div_euclid(-b), -1.0); // 7.0 >= -4.0 * -1.0
-    /// assert_eq!((-a).div_euclid(-b), 2.0); // -7.0 >= -4.0 * 2.0
+    /// assert_eq!(a.my_div_euclid(b), 1.0); // 7.0 > 4.0 * 1.0
+    /// assert_eq!((-a).my_div_euclid(b), -2.0); // -7.0 >= 4.0 * -2.0
+    /// assert_eq!(a.my_div_euclid(-b), -1.0); // 7.0 >= -4.0 * -1.0
+    /// assert_eq!((-a).my_div_euclid(-b), 2.0); // -7.0 >= -4.0 * 2.0
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[inline]
     #[stable(feature = "euclidean_division", since = "1.38.0")]
     pub fn my_div_euclid(self, rhs: f64) -> f64 {
-        let q = (self / rhs).trunc();
+        let q = (self / rhs).my_trunc();
         if self % rhs < 0.0 {
             return if rhs > 0.0 { q - 1.0 } else { q + 1.0 };
         }
@@ -329,13 +333,13 @@ impl f64 {
 
     /// Calculates the least nonnegative remainder of `self (mod rhs)`.
     ///
-    /// In particular, the return value `r` satisfies `0.0 <= r < rhs.abs()` in
+    /// In particular, the return value `r` satisfies `0.0 <= r < rhs.my_abs()` in
     /// most cases. However, due to a floating point round-off error it can
-    /// result in `r == rhs.abs()`, violating the mathematical definition, if
-    /// `self` is much smaller than `rhs.abs()` in magnitude and `self < 0.0`.
+    /// result in `r == rhs.my_abs()`, violating the mathematical definition, if
+    /// `self` is much smaller than `rhs.my_abs()` in magnitude and `self < 0.0`.
     /// This result is not an element of the function's codomain, but it is the
     /// closest floating point number in the real numbers and thus fulfills the
-    /// property `self == self.div_euclid(rhs) * rhs + self.rem_euclid(rhs)`
+    /// property `self == self.my_div_euclid(rhs) * rhs + self.my_rem_euclid(rhs)`
     /// approximately.
     ///
     /// # Precision
@@ -348,12 +352,12 @@ impl f64 {
     /// ```
     /// let a: f64 = 7.0;
     /// let b = 4.0;
-    /// assert_eq!(a.rem_euclid(b), 3.0);
-    /// assert_eq!((-a).rem_euclid(b), 1.0);
-    /// assert_eq!(a.rem_euclid(-b), 3.0);
-    /// assert_eq!((-a).rem_euclid(-b), 1.0);
+    /// assert_eq!(a.my_rem_euclid(b), 3.0);
+    /// assert_eq!((-a).my_rem_euclid(b), 1.0);
+    /// assert_eq!(a.my_rem_euclid(-b), 3.0);
+    /// assert_eq!((-a).my_rem_euclid(-b), 1.0);
     /// // limitation due to round-off error
-    /// assert!((-f64::EPSILON).rem_euclid(3.0) != 0.0);
+    /// assert!((-f64::EPSILON).my_rem_euclid(3.0) != 0.0);
     /// ```
     #[doc(alias = "modulo", alias = "mod")]
     #[rustc_allow_incoherent_impl]
@@ -362,7 +366,11 @@ impl f64 {
     #[stable(feature = "euclidean_division", since = "1.38.0")]
     pub fn my_rem_euclid(self, rhs: f64) -> f64 {
         let r = self % rhs;
-        if r < 0.0 { r + rhs.abs() } else { r }
+        if r < 0.0 {
+            r + rhs.my_abs()
+        } else {
+            r
+        }
     }
 
     /// Raises a number to an integer power.
@@ -380,7 +388,7 @@ impl f64 {
     ///
     /// ```
     /// let x = 2.0_f64;
-    /// let abs_difference = (x.powi(2) - (x * x)).abs();
+    /// let abs_difference = (x.my_powi(2) - (x * x)).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -403,7 +411,7 @@ impl f64 {
     ///
     /// ```
     /// let x = 2.0_f64;
-    /// let abs_difference = (x.powf(2.0) - (x * x)).abs();
+    /// let abs_difference = (x.my_powf(2.0) - (x * x)).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -432,9 +440,9 @@ impl f64 {
     /// let negative = -4.0_f64;
     /// let negative_zero = -0.0_f64;
     ///
-    /// assert_eq!(positive.sqrt(), 2.0);
-    /// assert!(negative.sqrt().is_nan());
-    /// assert!(negative_zero.sqrt() == negative_zero);
+    /// assert_eq!(positive.my_sqrt(), 2.0);
+    /// assert!(negative.my_sqrt().is_nan());
+    /// assert!(negative_zero.my_sqrt() == negative_zero);
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
@@ -456,10 +464,10 @@ impl f64 {
     /// ```
     /// let one = 1.0_f64;
     /// // e^1
-    /// let e = one.exp();
+    /// let e = one.my_exp();
     ///
     /// // ln(e) - 1 == 0
-    /// let abs_difference = (e.ln() - 1.0).abs();
+    /// let abs_difference = (e.my_ln() - 1.0).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -484,7 +492,7 @@ impl f64 {
     /// let f = 2.0_f64;
     ///
     /// // 2^2 - 4 == 0
-    /// let abs_difference = (f.exp2() - 4.0).abs();
+    /// let abs_difference = (f.exp2() - 4.0).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -508,10 +516,10 @@ impl f64 {
     /// ```
     /// let one = 1.0_f64;
     /// // e^1
-    /// let e = one.exp();
+    /// let e = one.my_exp();
     ///
     /// // ln(e) - 1 == 0
-    /// let abs_difference = (e.ln() - 1.0).abs();
+    /// let abs_difference = (e.my_ln() - 1.0).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -540,7 +548,7 @@ impl f64 {
     /// let twenty_five = 25.0_f64;
     ///
     /// // log5(25) - 2 == 0
-    /// let abs_difference = (twenty_five.log(5.0) - 2.0).abs();
+    /// let abs_difference = (twenty_five.log(5.0) - 2.0).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -549,7 +557,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn my_log(self, base: f64) -> f64 {
-        self.ln() / base.ln()
+        self.my_ln() / base.my_ln()
     }
 
     /// Returns the base 2 logarithm of the number.
@@ -565,7 +573,7 @@ impl f64 {
     /// let four = 4.0_f64;
     ///
     /// // log2(4) - 2 == 0
-    /// let abs_difference = (four.log2() - 2.0).abs();
+    /// let abs_difference = (four.log2() - 2.0).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -590,7 +598,7 @@ impl f64 {
     /// let hundred = 100.0_f64;
     ///
     /// // log10(100) - 2 == 0
-    /// let abs_difference = (hundred.log10() - 2.0).abs();
+    /// let abs_difference = (hundred.log10() - 2.0).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -620,8 +628,8 @@ impl f64 {
     /// let x = 3.0_f64;
     /// let y = -3.0_f64;
     ///
-    /// let abs_difference_x = (x.abs_sub(1.0) - 2.0).abs();
-    /// let abs_difference_y = (y.abs_sub(1.0) - 0.0).abs();
+    /// let abs_difference_x = (x.abs_sub(1.0) - 2.0).my_abs();
+    /// let abs_difference_y = (y.abs_sub(1.0) - 0.0).my_abs();
     ///
     /// assert!(abs_difference_x < 1e-10);
     /// assert!(abs_difference_y < 1e-10);
@@ -632,7 +640,7 @@ impl f64 {
     #[inline]
     #[deprecated(
         since = "1.10.0",
-        note = "you probably meant `(self - other).abs()`: \
+        note = "you probably meant `(self - other).my_abs()`: \
                 this operation is `(self - other).max(0.0)` \
                 except that `abs_sub` also propagates NaNs (also \
                 known as `fdim` in C). If you truly need the positive \
@@ -659,7 +667,7 @@ impl f64 {
     /// let x = 8.0_f64;
     ///
     /// // x^(1/3) - 2 == 0
-    /// let abs_difference = (x.cbrt() - 2.0).abs();
+    /// let abs_difference = (x.cbrt() - 2.0).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -673,8 +681,8 @@ impl f64 {
 
     /// Compute the distance between the origin and a point (`x`, `y`) on the
     /// Euclidean plane. Equivalently, compute the length of the hypotenuse of a
-    /// right-angle triangle with other sides having length `x.abs()` and
-    /// `y.abs()`.
+    /// right-angle triangle with other sides having length `x.my_abs()` and
+    /// `y.my_abs()`.
     ///
     /// # Unspecified precision
     ///
@@ -690,7 +698,7 @@ impl f64 {
     /// let y = 3.0_f64;
     ///
     /// // sqrt(x^2 + y^2)
-    /// let abs_difference = (x.hypot(y) - (x.powi(2) + y.powi(2)).sqrt()).abs();
+    /// let abs_difference = (x.my_hypot(y) - (x.my_powi(2) + y.my_powi(2)).my_sqrt()).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -714,7 +722,7 @@ impl f64 {
     /// ```
     /// let x = std::f64::consts::FRAC_PI_2;
     ///
-    /// let abs_difference = (x.sin() - 1.0).abs();
+    /// let abs_difference = (x.my_sin() - 1.0).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -738,7 +746,7 @@ impl f64 {
     /// ```
     /// let x = 2.0 * std::f64::consts::PI;
     ///
-    /// let abs_difference = (x.cos() - 1.0).abs();
+    /// let abs_difference = (x.my_cos() - 1.0).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -763,7 +771,7 @@ impl f64 {
     ///
     /// ```
     /// let x = std::f64::consts::FRAC_PI_4;
-    /// let abs_difference = (x.tan() - 1.0).abs();
+    /// let abs_difference = (x.tan() - 1.0).my_abs();
     ///
     /// assert!(abs_difference < 1e-14);
     /// ```
@@ -792,7 +800,7 @@ impl f64 {
     /// let f = std::f64::consts::FRAC_PI_2;
     ///
     /// // asin(sin(pi/2))
-    /// let abs_difference = (f.sin().asin() - std::f64::consts::FRAC_PI_2).abs();
+    /// let abs_difference = (f.my_sin().asin() - std::f64::consts::FRAC_PI_2).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -822,7 +830,7 @@ impl f64 {
     /// let f = std::f64::consts::FRAC_PI_4;
     ///
     /// // acos(cos(pi/4))
-    /// let abs_difference = (f.cos().acos() - std::f64::consts::FRAC_PI_4).abs();
+    /// let abs_difference = (f.my_cos().acos() - std::f64::consts::FRAC_PI_4).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -851,7 +859,7 @@ impl f64 {
     /// let f = 1.0_f64;
     ///
     /// // atan(tan(1))
-    /// let abs_difference = (f.tan().atan() - 1.0).abs();
+    /// let abs_difference = (f.tan().atan() - 1.0).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -891,8 +899,8 @@ impl f64 {
     /// let x2 = -3.0_f64;
     /// let y2 = 3.0_f64;
     ///
-    /// let abs_difference_1 = (y1.atan2(x1) - (-std::f64::consts::FRAC_PI_4)).abs();
-    /// let abs_difference_2 = (y2.atan2(x2) - (3.0 * std::f64::consts::FRAC_PI_4)).abs();
+    /// let abs_difference_1 = (y1.atan2(x1) - (-std::f64::consts::FRAC_PI_4)).my_abs();
+    /// let abs_difference_2 = (y2.atan2(x2) - (3.0 * std::f64::consts::FRAC_PI_4)).my_abs();
     ///
     /// assert!(abs_difference_1 < 1e-10);
     /// assert!(abs_difference_2 < 1e-10);
@@ -921,8 +929,8 @@ impl f64 {
     /// let x = std::f64::consts::FRAC_PI_4;
     /// let f = x.sin_cos();
     ///
-    /// let abs_difference_0 = (f.0 - x.sin()).abs();
-    /// let abs_difference_1 = (f.1 - x.cos()).abs();
+    /// let abs_difference_0 = (f.0 - x.my_sin()).my_abs();
+    /// let abs_difference_1 = (f.1 - x.my_cos()).my_abs();
     ///
     /// assert!(abs_difference_0 < 1e-10);
     /// assert!(abs_difference_1 < 1e-10);
@@ -932,7 +940,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn my_sin_cos(self) -> (f64, f64) {
-        (self.sin(), self.cos())
+        (self.my_sin(), self.my_cos())
     }
 
     /// Returns `e^(self) - 1` in a way that is accurate even if the
@@ -952,7 +960,7 @@ impl f64 {
     ///
     /// // for very small x, e^x is approximately 1 + x + x^2 / 2
     /// let approx = x + x * x / 2.0;
-    /// let abs_difference = (x.exp_m1() - approx).abs();
+    /// let abs_difference = (x.exp_m1() - approx).my_abs();
     ///
     /// assert!(abs_difference < 1e-20);
     /// ```
@@ -981,7 +989,7 @@ impl f64 {
     ///
     /// // for very small x, ln(1 + x) is approximately x - x^2 / 2
     /// let approx = x - x * x / 2.0;
-    /// let abs_difference = (x.ln_1p() - approx).abs();
+    /// let abs_difference = (x.my_ln_1p() - approx).my_abs();
     ///
     /// assert!(abs_difference < 1e-20);
     /// ```
@@ -1009,10 +1017,10 @@ impl f64 {
     /// let e = std::f64::consts::E;
     /// let x = 1.0_f64;
     ///
-    /// let f = x.sinh();
+    /// let f = x.my_sinh();
     /// // Solving sinh() at 1 gives `(e^2-1)/(2e)`
     /// let g = ((e * e) - 1.0) / (2.0 * e);
-    /// let abs_difference = (f - g).abs();
+    /// let abs_difference = (f - g).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -1038,10 +1046,10 @@ impl f64 {
     /// ```
     /// let e = std::f64::consts::E;
     /// let x = 1.0_f64;
-    /// let f = x.cosh();
+    /// let f = x.my_cosh();
     /// // Solving cosh() at 1 gives this result
     /// let g = ((e * e) + 1.0) / (2.0 * e);
-    /// let abs_difference = (f - g).abs();
+    /// let abs_difference = (f - g).my_abs();
     ///
     /// // Same result
     /// assert!(abs_difference < 1.0e-10);
@@ -1069,10 +1077,10 @@ impl f64 {
     /// let e = std::f64::consts::E;
     /// let x = 1.0_f64;
     ///
-    /// let f = x.tanh();
+    /// let f = x.my_tanh();
     /// // Solving tanh() at 1 gives `(1 - e^(-2))/(1 + e^(-2))`
-    /// let g = (1.0 - e.powi(-2)) / (1.0 + e.powi(-2));
-    /// let abs_difference = (f - g).abs();
+    /// let g = (1.0 - e.my_powi(-2)) / (1.0 + e.my_powi(-2));
+    /// let abs_difference = (f - g).my_abs();
     ///
     /// assert!(abs_difference < 1.0e-10);
     /// ```
@@ -1095,9 +1103,9 @@ impl f64 {
     ///
     /// ```
     /// let x = 1.0_f64;
-    /// let f = x.sinh().asinh();
+    /// let f = x.my_sinh().my_asinh();
     ///
-    /// let abs_difference = (f - x).abs();
+    /// let abs_difference = (f - x).my_abs();
     ///
     /// assert!(abs_difference < 1.0e-10);
     /// ```
@@ -1107,9 +1115,9 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn my_asinh(self) -> f64 {
-        let ax = self.abs();
+        let ax = self.my_abs();
         let ix = 1.0 / ax;
-        (ax + (ax / (Self::hypot(1.0, ix) + ix))).ln_1p().copysign(self)
+        (ax + (ax / (Self::my_hypot(1.0, ix) + ix))).my_ln_1p().my_copysign(self)
     }
 
     /// Inverse hyperbolic cosine function.
@@ -1123,9 +1131,9 @@ impl f64 {
     ///
     /// ```
     /// let x = 1.0_f64;
-    /// let f = x.cosh().acosh();
+    /// let f = x.my_cosh().my_acosh();
     ///
-    /// let abs_difference = (f - x).abs();
+    /// let abs_difference = (f - x).my_abs();
     ///
     /// assert!(abs_difference < 1.0e-10);
     /// ```
@@ -1138,7 +1146,7 @@ impl f64 {
         if self < 1.0 {
             Self::NAN
         } else {
-            (self + ((self - 1.0).sqrt() * (self + 1.0).sqrt())).ln()
+            (self + ((self - 1.0).my_sqrt() * (self + 1.0).my_sqrt())).my_ln()
         }
     }
 
@@ -1153,9 +1161,9 @@ impl f64 {
     ///
     /// ```
     /// let e = std::f64::consts::E;
-    /// let f = e.tanh().atanh();
+    /// let f = e.my_tanh().my_atanh();
     ///
-    /// let abs_difference = (f - e).abs();
+    /// let abs_difference = (f - e).my_abs();
     ///
     /// assert!(abs_difference < 1.0e-10);
     /// ```
@@ -1165,7 +1173,7 @@ impl f64 {
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
     pub fn my_atanh(self) -> f64 {
-        0.5 * ((2.0 * self) / (1.0 - self)).ln_1p()
+        0.5 * ((2.0 * self) / (1.0 - self)).my_ln_1p()
     }
 
     /// Gamma function.
@@ -1183,7 +1191,7 @@ impl f64 {
     /// #![feature(float_gamma)]
     /// let x = 5.0f64;
     ///
-    /// let abs_difference = (x.gamma() - 24.0).abs();
+    /// let abs_difference = (x.my_gamma() - 24.0).my_abs();
     ///
     /// assert!(abs_difference <= f64::EPSILON);
     /// ```
@@ -1212,7 +1220,7 @@ impl f64 {
     /// #![feature(float_gamma)]
     /// let x = 2.0f64;
     ///
-    /// let abs_difference = (x.ln_gamma().0 - 0.0).abs();
+    /// let abs_difference = (x.my_ln_gamma().0 - 0.0).my_abs();
     ///
     /// assert!(abs_difference <= f64::EPSILON);
     /// ```

@@ -828,8 +828,8 @@ pub fn print_time_passes_entry(
         return;
     }
 
-    let rss_to_mb = |rss| (rss as f64 / 1_000_000.0).round() as usize;
-    let rss_change_to_mb = |rss| (rss as f64 / 1_000_000.0).round() as i128;
+    let rss_to_mb = |rss| (rss as f64 / 1_000_000.0).my_round() as usize;
+    let rss_change_to_mb = |rss| (rss as f64 / 1_000_000.0).my_round() as i128;
 
     let mem_string = match (start_rss, end_rss) {
         (Some(start_rss), Some(end_rss)) => {

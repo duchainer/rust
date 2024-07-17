@@ -48,7 +48,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn floor(self) -> f32 {
+    pub fn my_floor(self) -> f32 {
         unsafe { intrinsics::floorf32(self) }
     }
 
@@ -70,7 +70,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn ceil(self) -> f32 {
+    pub fn my_ceil(self) -> f32 {
         unsafe { intrinsics::ceilf32(self) }
     }
 
@@ -88,17 +88,17 @@ impl f32 {
     /// let i = 3.5_f32;
     /// let j = 4.5_f32;
     ///
-    /// assert_eq!(f.round(), 3.0);
-    /// assert_eq!(g.round(), -3.0);
-    /// assert_eq!(h.round(), -4.0);
-    /// assert_eq!(i.round(), 4.0);
-    /// assert_eq!(j.round(), 5.0);
+    /// assert_eq!(f.my_round(), 3.0);
+    /// assert_eq!(g.my_round(), -3.0);
+    /// assert_eq!(h.my_round(), -4.0);
+    /// assert_eq!(i.my_round(), 4.0);
+    /// assert_eq!(j.my_round(), 5.0);
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn round(self) -> f32 {
+    pub fn my_round(self) -> f32 {
         unsafe { intrinsics::roundf32(self) }
     }
 
@@ -124,7 +124,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "round_ties_even", since = "1.77.0")]
     #[inline]
-    pub fn round_ties_even(self) -> f32 {
+    pub fn my_round_ties_even(self) -> f32 {
         unsafe { intrinsics::rintf32(self) }
     }
 
@@ -140,16 +140,16 @@ impl f32 {
     /// let g = 3.0_f32;
     /// let h = -3.7_f32;
     ///
-    /// assert_eq!(f.trunc(), 3.0);
-    /// assert_eq!(g.trunc(), 3.0);
-    /// assert_eq!(h.trunc(), -3.0);
+    /// assert_eq!(f.my_trunc(), 3.0);
+    /// assert_eq!(g.my_trunc(), 3.0);
+    /// assert_eq!(h.my_trunc(), -3.0);
     /// ```
     #[doc(alias = "truncate")]
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn trunc(self) -> f32 {
+    pub fn my_trunc(self) -> f32 {
         unsafe { intrinsics::truncf32(self) }
     }
 
@@ -162,8 +162,8 @@ impl f32 {
     /// ```
     /// let x = 3.6_f32;
     /// let y = -3.6_f32;
-    /// let abs_difference_x = (x.fract() - 0.6).abs();
-    /// let abs_difference_y = (y.fract() - (-0.6)).abs();
+    /// let abs_difference_x = (x.fract() - 0.6).my_abs();
+    /// let abs_difference_y = (y.fract() - (-0.6)).my_abs();
     ///
     /// assert!(abs_difference_x <= f32::EPSILON);
     /// assert!(abs_difference_y <= f32::EPSILON);
@@ -172,8 +172,8 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn fract(self) -> f32 {
-        self - self.trunc()
+    pub fn my_fract(self) -> f32 {
+        self - self.my_trunc()
     }
 
     /// Computes the absolute value of `self`.
@@ -186,16 +186,16 @@ impl f32 {
     /// let x = 3.5_f32;
     /// let y = -3.5_f32;
     ///
-    /// assert_eq!(x.abs(), x);
-    /// assert_eq!(y.abs(), -y);
+    /// assert_eq!(x.my_abs(), x);
+    /// assert_eq!(y.my_abs(), -y);
     ///
-    /// assert!(f32::NAN.abs().is_nan());
+    /// assert!(f32::NAN.my_abs().is_nan());
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn abs(self) -> f32 {
+    pub fn my_abs(self) -> f32 {
         unsafe { intrinsics::fabsf32(self) }
     }
 
@@ -219,8 +219,8 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn signum(self) -> f32 {
-        if self.is_nan() { Self::NAN } else { 1.0_f32.copysign(self) }
+    pub fn my_signum(self) -> f32 {
+        if self.is_nan() { Self::NAN } else { 1.0_f32.my_copysign(self) }
     }
 
     /// Returns a number composed of the magnitude of `self` and the sign of
@@ -237,18 +237,18 @@ impl f32 {
     /// ```
     /// let f = 3.5_f32;
     ///
-    /// assert_eq!(f.copysign(0.42), 3.5_f32);
-    /// assert_eq!(f.copysign(-0.42), -3.5_f32);
-    /// assert_eq!((-f).copysign(0.42), 3.5_f32);
-    /// assert_eq!((-f).copysign(-0.42), -3.5_f32);
+    /// assert_eq!(f.my_copysign(0.42), 3.5_f32);
+    /// assert_eq!(f.my_copysign(-0.42), -3.5_f32);
+    /// assert_eq!((-f).my_copysign(0.42), 3.5_f32);
+    /// assert_eq!((-f).my_copysign(-0.42), -3.5_f32);
     ///
-    /// assert!(f32::NAN.copysign(1.0).is_nan());
+    /// assert!(f32::NAN.my_copysign(1.0).is_nan());
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[inline]
     #[stable(feature = "copysign", since = "1.35.0")]
-    pub fn copysign(self, sign: f32) -> f32 {
+    pub fn my_copysign(self, sign: f32) -> f32 {
         unsafe { intrinsics::copysignf32(self, sign) }
     }
 
@@ -289,7 +289,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn mul_add(self, a: f32, b: f32) -> f32 {
+    pub fn my_mul_add(self, a: f32, b: f32) -> f32 {
         unsafe { intrinsics::fmaf32(self, a, b) }
     }
 
@@ -319,8 +319,8 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[inline]
     #[stable(feature = "euclidean_division", since = "1.38.0")]
-    pub fn div_euclid(self, rhs: f32) -> f32 {
-        let q = (self / rhs).trunc();
+    pub fn my_div_euclid(self, rhs: f32) -> f32 {
+        let q = (self / rhs).my_trunc();
         if self % rhs < 0.0 {
             return if rhs > 0.0 { q - 1.0 } else { q + 1.0 };
         }
@@ -329,10 +329,10 @@ impl f32 {
 
     /// Calculates the least nonnegative remainder of `self (mod rhs)`.
     ///
-    /// In particular, the return value `r` satisfies `0.0 <= r < rhs.abs()` in
+    /// In particular, the return value `r` satisfies `0.0 <= r < rhs.my_abs()` in
     /// most cases. However, due to a floating point round-off error it can
-    /// result in `r == rhs.abs()`, violating the mathematical definition, if
-    /// `self` is much smaller than `rhs.abs()` in magnitude and `self < 0.0`.
+    /// result in `r == rhs.my_abs()`, violating the mathematical definition, if
+    /// `self` is much smaller than `rhs.my_abs()` in magnitude and `self < 0.0`.
     /// This result is not an element of the function's codomain, but it is the
     /// closest floating point number in the real numbers and thus fulfills the
     /// property `self == self.div_euclid(rhs) * rhs + self.rem_euclid(rhs)`
@@ -360,9 +360,9 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[inline]
     #[stable(feature = "euclidean_division", since = "1.38.0")]
-    pub fn rem_euclid(self, rhs: f32) -> f32 {
+    pub fn my_rem_euclid(self, rhs: f32) -> f32 {
         let r = self % rhs;
-        if r < 0.0 { r + rhs.abs() } else { r }
+        if r < 0.0 { r + rhs.my_abs() } else { r }
     }
 
     /// Raises a number to an integer power.
@@ -380,7 +380,7 @@ impl f32 {
     ///
     /// ```
     /// let x = 2.0_f32;
-    /// let abs_difference = (x.powi(2) - (x * x)).abs();
+    /// let abs_difference = (x.powi(2) - (x * x)).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -388,7 +388,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn powi(self, n: i32) -> f32 {
+    pub fn my_powi(self, n: i32) -> f32 {
         unsafe { intrinsics::powif32(self, n) }
     }
 
@@ -403,7 +403,7 @@ impl f32 {
     ///
     /// ```
     /// let x = 2.0_f32;
-    /// let abs_difference = (x.powf(2.0) - (x * x)).abs();
+    /// let abs_difference = (x.my_powf(2.0) - (x * x)).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -411,7 +411,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn powf(self, n: f32) -> f32 {
+    pub fn my_powf(self, n: f32) -> f32 {
         unsafe { intrinsics::powf32(self, n) }
     }
 
@@ -432,15 +432,15 @@ impl f32 {
     /// let negative = -4.0_f32;
     /// let negative_zero = -0.0_f32;
     ///
-    /// assert_eq!(positive.sqrt(), 2.0);
-    /// assert!(negative.sqrt().is_nan());
-    /// assert!(negative_zero.sqrt() == negative_zero);
+    /// assert_eq!(positive.my_sqrt(), 2.0);
+    /// assert!(negative.my_sqrt().is_nan());
+    /// assert!(negative_zero.my_sqrt() == negative_zero);
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn sqrt(self) -> f32 {
+    pub fn my_sqrt(self) -> f32 {
         unsafe { intrinsics::sqrtf32(self) }
     }
 
@@ -459,7 +459,7 @@ impl f32 {
     /// let e = one.exp();
     ///
     /// // ln(e) - 1 == 0
-    /// let abs_difference = (e.ln() - 1.0).abs();
+    /// let abs_difference = (e.my_ln() - 1.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -467,7 +467,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn exp(self) -> f32 {
+    pub fn my_exp(self) -> f32 {
         unsafe { intrinsics::expf32(self) }
     }
 
@@ -484,7 +484,7 @@ impl f32 {
     /// let f = 2.0f32;
     ///
     /// // 2^2 - 4 == 0
-    /// let abs_difference = (f.exp2() - 4.0).abs();
+    /// let abs_difference = (f.exp2() - 4.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -492,7 +492,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn exp2(self) -> f32 {
+    pub fn my_exp2(self) -> f32 {
         unsafe { intrinsics::exp2f32(self) }
     }
 
@@ -511,7 +511,7 @@ impl f32 {
     /// let e = one.exp();
     ///
     /// // ln(e) - 1 == 0
-    /// let abs_difference = (e.ln() - 1.0).abs();
+    /// let abs_difference = (e.my_ln() - 1.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -519,7 +519,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn ln(self) -> f32 {
+    pub fn my_ln(self) -> f32 {
         unsafe { intrinsics::logf32(self) }
     }
 
@@ -527,7 +527,7 @@ impl f32 {
     ///
     /// The result might not be correctly rounded owing to implementation details;
     /// `self.log2()` can produce more accurate results for base 2, and
-    /// `self.log10()` can produce more accurate results for base 10.
+    /// `self.my_log10()` can produce more accurate results for base 10.
     ///
     /// # Unspecified precision
     ///
@@ -540,7 +540,7 @@ impl f32 {
     /// let five = 5.0f32;
     ///
     /// // log5(5) - 1 == 0
-    /// let abs_difference = (five.log(5.0) - 1.0).abs();
+    /// let abs_difference = (five.log(5.0) - 1.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -548,8 +548,8 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn log(self, base: f32) -> f32 {
-        self.ln() / base.ln()
+    pub fn my_log(self, base: f32) -> f32 {
+        self.my_ln() / base.my_ln()
     }
 
     /// Returns the base 2 logarithm of the number.
@@ -565,7 +565,7 @@ impl f32 {
     /// let two = 2.0f32;
     ///
     /// // log2(2) - 1 == 0
-    /// let abs_difference = (two.log2() - 1.0).abs();
+    /// let abs_difference = (two.log2() - 1.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -573,7 +573,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn log2(self) -> f32 {
+    pub fn my_log2(self) -> f32 {
         crate::sys::log2f32(self)
     }
 
@@ -590,7 +590,7 @@ impl f32 {
     /// let ten = 10.0f32;
     ///
     /// // log10(10) - 1 == 0
-    /// let abs_difference = (ten.log10() - 1.0).abs();
+    /// let abs_difference = (ten.my_log10() - 1.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -598,7 +598,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn log10(self) -> f32 {
+    pub fn my_log10(self) -> f32 {
         unsafe { intrinsics::log10f32(self) }
     }
 
@@ -620,8 +620,8 @@ impl f32 {
     /// let x = 3.0f32;
     /// let y = -3.0f32;
     ///
-    /// let abs_difference_x = (x.abs_sub(1.0) - 2.0).abs();
-    /// let abs_difference_y = (y.abs_sub(1.0) - 0.0).abs();
+    /// let abs_difference_x = (x.abs_sub(1.0) - 2.0).my_abs();
+    /// let abs_difference_y = (y.abs_sub(1.0) - 0.0).my_abs();
     ///
     /// assert!(abs_difference_x <= f32::EPSILON);
     /// assert!(abs_difference_y <= f32::EPSILON);
@@ -632,7 +632,7 @@ impl f32 {
     #[inline]
     #[deprecated(
         since = "1.10.0",
-        note = "you probably meant `(self - other).abs()`: \
+        note = "you probably meant `(self - other).my_abs()`: \
                 this operation is `(self - other).max(0.0)` \
                 except that `abs_sub` also propagates NaNs (also \
                 known as `fdimf` in C). If you truly need the positive \
@@ -640,7 +640,7 @@ impl f32 {
                 `fdimf`, depending on how you wish to handle NaN (please consider \
                 filing an issue describing your use-case too)."
     )]
-    pub fn abs_sub(self, other: f32) -> f32 {
+    pub fn my_abs_sub(self, other: f32) -> f32 {
         unsafe { cmath::fdimf(self, other) }
     }
 
@@ -659,7 +659,7 @@ impl f32 {
     /// let x = 8.0f32;
     ///
     /// // x^(1/3) - 2 == 0
-    /// let abs_difference = (x.cbrt() - 2.0).abs();
+    /// let abs_difference = (x.cbrt() - 2.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -667,14 +667,14 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn cbrt(self) -> f32 {
+    pub fn my_cbrt(self) -> f32 {
         unsafe { cmath::cbrtf(self) }
     }
 
     /// Compute the distance between the origin and a point (`x`, `y`) on the
     /// Euclidean plane. Equivalently, compute the length of the hypotenuse of a
-    /// right-angle triangle with other sides having length `x.abs()` and
-    /// `y.abs()`.
+    /// right-angle triangle with other sides having length `x.my_abs()` and
+    /// `y.my_abs()`.
     ///
     /// # Unspecified precision
     ///
@@ -690,7 +690,7 @@ impl f32 {
     /// let y = 3.0f32;
     ///
     /// // sqrt(x^2 + y^2)
-    /// let abs_difference = (x.hypot(y) - (x.powi(2) + y.powi(2)).sqrt()).abs();
+    /// let abs_difference = (x.my_hypot(y) - (x.powi(2) + y.powi(2)).my_sqrt()).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -698,7 +698,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn hypot(self, other: f32) -> f32 {
+    pub fn my_hypot(self, other: f32) -> f32 {
         unsafe { cmath::hypotf(self, other) }
     }
 
@@ -714,7 +714,7 @@ impl f32 {
     /// ```
     /// let x = std::f32::consts::FRAC_PI_2;
     ///
-    /// let abs_difference = (x.sin() - 1.0).abs();
+    /// let abs_difference = (x.my_sin() - 1.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -722,7 +722,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn sin(self) -> f32 {
+    pub fn my_sin(self) -> f32 {
         unsafe { intrinsics::sinf32(self) }
     }
 
@@ -738,7 +738,7 @@ impl f32 {
     /// ```
     /// let x = 2.0 * std::f32::consts::PI;
     ///
-    /// let abs_difference = (x.cos() - 1.0).abs();
+    /// let abs_difference = (x.my_cos() - 1.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -746,7 +746,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn cos(self) -> f32 {
+    pub fn my_cos(self) -> f32 {
         unsafe { intrinsics::cosf32(self) }
     }
 
@@ -763,7 +763,7 @@ impl f32 {
     ///
     /// ```
     /// let x = std::f32::consts::FRAC_PI_4;
-    /// let abs_difference = (x.tan() - 1.0).abs();
+    /// let abs_difference = (x.tan() - 1.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -771,7 +771,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn tan(self) -> f32 {
+    pub fn my_tan(self) -> f32 {
         unsafe { cmath::tanf(self) }
     }
 
@@ -792,7 +792,7 @@ impl f32 {
     /// let f = std::f32::consts::FRAC_PI_2;
     ///
     /// // asin(sin(pi/2))
-    /// let abs_difference = (f.sin().asin() - std::f32::consts::FRAC_PI_2).abs();
+    /// let abs_difference = (f.my_sin().asin() - std::f32::consts::FRAC_PI_2).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -801,7 +801,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn asin(self) -> f32 {
+    pub fn my_asin(self) -> f32 {
         unsafe { cmath::asinf(self) }
     }
 
@@ -822,7 +822,7 @@ impl f32 {
     /// let f = std::f32::consts::FRAC_PI_4;
     ///
     /// // acos(cos(pi/4))
-    /// let abs_difference = (f.cos().acos() - std::f32::consts::FRAC_PI_4).abs();
+    /// let abs_difference = (f.my_cos().acos() - std::f32::consts::FRAC_PI_4).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -831,7 +831,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn acos(self) -> f32 {
+    pub fn my_acos(self) -> f32 {
         unsafe { cmath::acosf(self) }
     }
 
@@ -851,7 +851,7 @@ impl f32 {
     /// let f = 1.0f32;
     ///
     /// // atan(tan(1))
-    /// let abs_difference = (f.tan().atan() - 1.0).abs();
+    /// let abs_difference = (f.tan().atan() - 1.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -860,7 +860,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn atan(self) -> f32 {
+    pub fn my_atan(self) -> f32 {
         unsafe { cmath::atanf(self) }
     }
 
@@ -891,8 +891,8 @@ impl f32 {
     /// let x2 = -3.0f32;
     /// let y2 = 3.0f32;
     ///
-    /// let abs_difference_1 = (y1.atan2(x1) - (-std::f32::consts::FRAC_PI_4)).abs();
-    /// let abs_difference_2 = (y2.atan2(x2) - (3.0 * std::f32::consts::FRAC_PI_4)).abs();
+    /// let abs_difference_1 = (y1.atan2(x1) - (-std::f32::consts::FRAC_PI_4)).my_abs();
+    /// let abs_difference_2 = (y2.atan2(x2) - (3.0 * std::f32::consts::FRAC_PI_4)).my_abs();
     ///
     /// assert!(abs_difference_1 <= f32::EPSILON);
     /// assert!(abs_difference_2 <= f32::EPSILON);
@@ -901,7 +901,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn atan2(self, other: f32) -> f32 {
+    pub fn my_atan2(self, other: f32) -> f32 {
         unsafe { cmath::atan2f(self, other) }
     }
 
@@ -921,8 +921,8 @@ impl f32 {
     /// let x = std::f32::consts::FRAC_PI_4;
     /// let f = x.sin_cos();
     ///
-    /// let abs_difference_0 = (f.0 - x.sin()).abs();
-    /// let abs_difference_1 = (f.1 - x.cos()).abs();
+    /// let abs_difference_0 = (f.0 - x.my_sin()).my_abs();
+    /// let abs_difference_1 = (f.1 - x.my_cos()).my_abs();
     ///
     /// assert!(abs_difference_0 <= f32::EPSILON);
     /// assert!(abs_difference_1 <= f32::EPSILON);
@@ -931,8 +931,8 @@ impl f32 {
     #[rustc_allow_incoherent_impl]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn sin_cos(self) -> (f32, f32) {
-        (self.sin(), self.cos())
+    pub fn my_sin_cos(self) -> (f32, f32) {
+        (self.my_sin(), self.my_cos())
     }
 
     /// Returns `e^(self) - 1` in a way that is accurate even if the
@@ -952,7 +952,7 @@ impl f32 {
     ///
     /// // for very small x, e^x is approximately 1 + x + x^2 / 2
     /// let approx = x + x * x / 2.0;
-    /// let abs_difference = (x.exp_m1() - approx).abs();
+    /// let abs_difference = (x.exp_m1() - approx).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -960,7 +960,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn exp_m1(self) -> f32 {
+    pub fn my_exp_m1(self) -> f32 {
         unsafe { cmath::expm1f(self) }
     }
 
@@ -981,7 +981,7 @@ impl f32 {
     ///
     /// // for very small x, ln(1 + x) is approximately x - x^2 / 2
     /// let approx = x - x * x / 2.0;
-    /// let abs_difference = (x.ln_1p() - approx).abs();
+    /// let abs_difference = (x.my_ln_1p() - approx).my_abs();
     ///
     /// assert!(abs_difference < 1e-10);
     /// ```
@@ -990,7 +990,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn ln_1p(self) -> f32 {
+    pub fn my_ln_1p(self) -> f32 {
         unsafe { cmath::log1pf(self) }
     }
 
@@ -1012,7 +1012,7 @@ impl f32 {
     /// let f = x.sinh();
     /// // Solving sinh() at 1 gives `(e^2-1)/(2e)`
     /// let g = ((e * e) - 1.0) / (2.0 * e);
-    /// let abs_difference = (f - g).abs();
+    /// let abs_difference = (f - g).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -1020,7 +1020,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn sinh(self) -> f32 {
+    pub fn my_sinh(self) -> f32 {
         unsafe { cmath::sinhf(self) }
     }
 
@@ -1041,7 +1041,7 @@ impl f32 {
     /// let f = x.cosh();
     /// // Solving cosh() at 1 gives this result
     /// let g = ((e * e) + 1.0) / (2.0 * e);
-    /// let abs_difference = (f - g).abs();
+    /// let abs_difference = (f - g).my_abs();
     ///
     /// // Same result
     /// assert!(abs_difference <= f32::EPSILON);
@@ -1050,7 +1050,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn cosh(self) -> f32 {
+    pub fn my_cosh(self) -> f32 {
         unsafe { cmath::coshf(self) }
     }
 
@@ -1072,7 +1072,7 @@ impl f32 {
     /// let f = x.tanh();
     /// // Solving tanh() at 1 gives `(1 - e^(-2))/(1 + e^(-2))`
     /// let g = (1.0 - e.powi(-2)) / (1.0 + e.powi(-2));
-    /// let abs_difference = (f - g).abs();
+    /// let abs_difference = (f - g).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -1080,7 +1080,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn tanh(self) -> f32 {
+    pub fn my_tanh(self) -> f32 {
         unsafe { cmath::tanhf(self) }
     }
 
@@ -1097,7 +1097,7 @@ impl f32 {
     /// let x = 1.0f32;
     /// let f = x.sinh().asinh();
     ///
-    /// let abs_difference = (f - x).abs();
+    /// let abs_difference = (f - x).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -1106,10 +1106,10 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn asinh(self) -> f32 {
-        let ax = self.abs();
+    pub fn my_asinh(self) -> f32 {
+        let ax = self.my_abs();
         let ix = 1.0 / ax;
-        (ax + (ax / (Self::hypot(1.0, ix) + ix))).ln_1p().copysign(self)
+        (ax + (ax / (Self::my_hypot(1.0, ix) + ix))).my_ln_1p().my_copysign(self)
     }
 
     /// Inverse hyperbolic cosine function.
@@ -1125,7 +1125,7 @@ impl f32 {
     /// let x = 1.0f32;
     /// let f = x.cosh().acosh();
     ///
-    /// let abs_difference = (f - x).abs();
+    /// let abs_difference = (f - x).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -1134,11 +1134,11 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn acosh(self) -> f32 {
+    pub fn my_acosh(self) -> f32 {
         if self < 1.0 {
             Self::NAN
         } else {
-            (self + ((self - 1.0).sqrt() * (self + 1.0).sqrt())).ln()
+            (self + ((self - 1.0).my_sqrt() * (self + 1.0).my_sqrt())).my_ln()
         }
     }
 
@@ -1155,7 +1155,7 @@ impl f32 {
     /// let e = std::f32::consts::E;
     /// let f = e.tanh().atanh();
     ///
-    /// let abs_difference = (f - e).abs();
+    /// let abs_difference = (f - e).my_abs();
     ///
     /// assert!(abs_difference <= 1e-5);
     /// ```
@@ -1164,8 +1164,8 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn atanh(self) -> f32 {
-        0.5 * ((2.0 * self) / (1.0 - self)).ln_1p()
+    pub fn my_atanh(self) -> f32 {
+        0.5 * ((2.0 * self) / (1.0 - self)).my_ln_1p()
     }
 
     /// Gamma function.
@@ -1183,7 +1183,7 @@ impl f32 {
     /// #![feature(float_gamma)]
     /// let x = 5.0f32;
     ///
-    /// let abs_difference = (x.gamma() - 24.0).abs();
+    /// let abs_difference = (x.gamma() - 24.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -1191,7 +1191,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[unstable(feature = "float_gamma", issue = "99842")]
     #[inline]
-    pub fn gamma(self) -> f32 {
+    pub fn my_gamma(self) -> f32 {
         unsafe { cmath::tgammaf(self) }
     }
 
@@ -1212,7 +1212,7 @@ impl f32 {
     /// #![feature(float_gamma)]
     /// let x = 2.0f32;
     ///
-    /// let abs_difference = (x.ln_gamma().0 - 0.0).abs();
+    /// let abs_difference = (x.ln_gamma().0 - 0.0).my_abs();
     ///
     /// assert!(abs_difference <= f32::EPSILON);
     /// ```
@@ -1220,7 +1220,7 @@ impl f32 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[unstable(feature = "float_gamma", issue = "99842")]
     #[inline]
-    pub fn ln_gamma(self) -> (f32, i32) {
+    pub fn my_ln_gamma(self) -> (f32, i32) {
         let mut signgamp: i32 = 0;
         let x = unsafe { cmath::lgammaf_r(self, &mut signgamp) };
         (x, signgamp)
