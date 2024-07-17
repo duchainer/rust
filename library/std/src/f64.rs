@@ -48,7 +48,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn floor(self) -> f64 {
+    pub fn my_floor(self) -> f64 {
         unsafe { intrinsics::floorf64(self) }
     }
 
@@ -70,7 +70,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn ceil(self) -> f64 {
+    pub fn my_ceil(self) -> f64 {
         unsafe { intrinsics::ceilf64(self) }
     }
 
@@ -98,7 +98,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn round(self) -> f64 {
+    pub fn my_round(self) -> f64 {
         unsafe { intrinsics::roundf64(self) }
     }
 
@@ -124,7 +124,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "round_ties_even", since = "1.77.0")]
     #[inline]
-    pub fn round_ties_even(self) -> f64 {
+    pub fn my_round_ties_even(self) -> f64 {
         unsafe { intrinsics::rintf64(self) }
     }
 
@@ -149,7 +149,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn trunc(self) -> f64 {
+    pub fn my_trunc(self) -> f64 {
         unsafe { intrinsics::truncf64(self) }
     }
 
@@ -172,7 +172,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn fract(self) -> f64 {
+    pub fn my_fract(self) -> f64 {
         self - self.trunc()
     }
 
@@ -195,7 +195,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn abs(self) -> f64 {
+    pub fn my_abs(self) -> f64 {
         unsafe { intrinsics::fabsf64(self) }
     }
 
@@ -219,7 +219,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn signum(self) -> f64 {
+    pub fn my_signum(self) -> f64 {
         if self.is_nan() { Self::NAN } else { 1.0_f64.copysign(self) }
     }
 
@@ -248,7 +248,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "copysign", since = "1.35.0")]
     #[inline]
-    pub fn copysign(self, sign: f64) -> f64 {
+    pub fn my_copysign(self, sign: f64) -> f64 {
         unsafe { intrinsics::copysignf64(self, sign) }
     }
 
@@ -289,7 +289,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn mul_add(self, a: f64, b: f64) -> f64 {
+    pub fn my_mul_add(self, a: f64, b: f64) -> f64 {
         unsafe { intrinsics::fmaf64(self, a, b) }
     }
 
@@ -319,7 +319,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[inline]
     #[stable(feature = "euclidean_division", since = "1.38.0")]
-    pub fn div_euclid(self, rhs: f64) -> f64 {
+    pub fn my_div_euclid(self, rhs: f64) -> f64 {
         let q = (self / rhs).trunc();
         if self % rhs < 0.0 {
             return if rhs > 0.0 { q - 1.0 } else { q + 1.0 };
@@ -360,7 +360,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[inline]
     #[stable(feature = "euclidean_division", since = "1.38.0")]
-    pub fn rem_euclid(self, rhs: f64) -> f64 {
+    pub fn my_rem_euclid(self, rhs: f64) -> f64 {
         let r = self % rhs;
         if r < 0.0 { r + rhs.abs() } else { r }
     }
@@ -388,7 +388,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn powi(self, n: i32) -> f64 {
+    pub fn my_powi(self, n: i32) -> f64 {
         unsafe { intrinsics::powif64(self, n) }
     }
 
@@ -411,7 +411,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn powf(self, n: f64) -> f64 {
+    pub fn my_powf(self, n: f64) -> f64 {
         unsafe { intrinsics::powf64(self, n) }
     }
 
@@ -440,7 +440,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn sqrt(self) -> f64 {
+    pub fn my_sqrt(self) -> f64 {
         unsafe { intrinsics::sqrtf64(self) }
     }
 
@@ -467,7 +467,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn exp(self) -> f64 {
+    pub fn my_exp(self) -> f64 {
         unsafe { intrinsics::expf64(self) }
     }
 
@@ -492,7 +492,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn exp2(self) -> f64 {
+    pub fn my_exp2(self) -> f64 {
         unsafe { intrinsics::exp2f64(self) }
     }
 
@@ -519,7 +519,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn ln(self) -> f64 {
+    pub fn my_ln(self) -> f64 {
         crate::sys::log_wrapper(self, |n| unsafe { intrinsics::logf64(n) })
     }
 
@@ -548,7 +548,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn log(self, base: f64) -> f64 {
+    pub fn my_log(self, base: f64) -> f64 {
         self.ln() / base.ln()
     }
 
@@ -573,7 +573,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn log2(self) -> f64 {
+    pub fn my_log2(self) -> f64 {
         crate::sys::log_wrapper(self, crate::sys::log2f64)
     }
 
@@ -598,7 +598,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn log10(self) -> f64 {
+    pub fn my_log10(self) -> f64 {
         crate::sys::log_wrapper(self, |n| unsafe { intrinsics::log10f64(n) })
     }
 
@@ -640,7 +640,7 @@ impl f64 {
                 `fdim`, depending on how you wish to handle NaN (please consider \
                 filing an issue describing your use-case too)."
     )]
-    pub fn abs_sub(self, other: f64) -> f64 {
+    pub fn my_abs_sub(self, other: f64) -> f64 {
         unsafe { cmath::fdim(self, other) }
     }
 
@@ -667,7 +667,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn cbrt(self) -> f64 {
+    pub fn my_cbrt(self) -> f64 {
         unsafe { cmath::cbrt(self) }
     }
 
@@ -698,7 +698,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn hypot(self, other: f64) -> f64 {
+    pub fn my_hypot(self, other: f64) -> f64 {
         unsafe { cmath::hypot(self, other) }
     }
 
@@ -722,7 +722,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn sin(self) -> f64 {
+    pub fn my_sin(self) -> f64 {
         unsafe { intrinsics::sinf64(self) }
     }
 
@@ -746,7 +746,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn cos(self) -> f64 {
+    pub fn my_cos(self) -> f64 {
         unsafe { intrinsics::cosf64(self) }
     }
 
@@ -771,7 +771,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn tan(self) -> f64 {
+    pub fn my_tan(self) -> f64 {
         unsafe { cmath::tan(self) }
     }
 
@@ -801,7 +801,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn asin(self) -> f64 {
+    pub fn my_asin(self) -> f64 {
         unsafe { cmath::asin(self) }
     }
 
@@ -831,7 +831,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn acos(self) -> f64 {
+    pub fn my_acos(self) -> f64 {
         unsafe { cmath::acos(self) }
     }
 
@@ -860,7 +860,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn atan(self) -> f64 {
+    pub fn my_atan(self) -> f64 {
         unsafe { cmath::atan(self) }
     }
 
@@ -901,7 +901,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn atan2(self, other: f64) -> f64 {
+    pub fn my_atan2(self, other: f64) -> f64 {
         unsafe { cmath::atan2(self, other) }
     }
 
@@ -931,7 +931,7 @@ impl f64 {
     #[rustc_allow_incoherent_impl]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn sin_cos(self) -> (f64, f64) {
+    pub fn my_sin_cos(self) -> (f64, f64) {
         (self.sin(), self.cos())
     }
 
@@ -960,7 +960,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn exp_m1(self) -> f64 {
+    pub fn my_exp_m1(self) -> f64 {
         unsafe { cmath::expm1(self) }
     }
 
@@ -990,7 +990,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn ln_1p(self) -> f64 {
+    pub fn my_ln_1p(self) -> f64 {
         unsafe { cmath::log1p(self) }
     }
 
@@ -1020,7 +1020,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn sinh(self) -> f64 {
+    pub fn my_sinh(self) -> f64 {
         unsafe { cmath::sinh(self) }
     }
 
@@ -1050,7 +1050,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn cosh(self) -> f64 {
+    pub fn my_cosh(self) -> f64 {
         unsafe { cmath::cosh(self) }
     }
 
@@ -1080,7 +1080,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn tanh(self) -> f64 {
+    pub fn my_tanh(self) -> f64 {
         unsafe { cmath::tanh(self) }
     }
 
@@ -1106,7 +1106,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn asinh(self) -> f64 {
+    pub fn my_asinh(self) -> f64 {
         let ax = self.abs();
         let ix = 1.0 / ax;
         (ax + (ax / (Self::hypot(1.0, ix) + ix))).ln_1p().copysign(self)
@@ -1134,7 +1134,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn acosh(self) -> f64 {
+    pub fn my_acosh(self) -> f64 {
         if self < 1.0 {
             Self::NAN
         } else {
@@ -1164,7 +1164,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn atanh(self) -> f64 {
+    pub fn my_atanh(self) -> f64 {
         0.5 * ((2.0 * self) / (1.0 - self)).ln_1p()
     }
 
@@ -1192,7 +1192,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[unstable(feature = "float_gamma", issue = "99842")]
     #[inline]
-    pub fn gamma(self) -> f64 {
+    pub fn my_gamma(self) -> f64 {
         unsafe { cmath::tgamma(self) }
     }
 
@@ -1221,7 +1221,7 @@ impl f64 {
     #[must_use = "method returns a new number and does not mutate the original value"]
     #[unstable(feature = "float_gamma", issue = "99842")]
     #[inline]
-    pub fn ln_gamma(self) -> (f64, i32) {
+    pub fn my_ln_gamma(self) -> (f64, i32) {
         let mut signgamp: i32 = 0;
         let x = unsafe { cmath::lgamma_r(self, &mut signgamp) };
         (x, signgamp)
